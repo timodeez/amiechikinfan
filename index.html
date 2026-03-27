@@ -23,7 +23,13 @@
         backdrop-filter: blur(4px);
       }
       .grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 22px; }
-      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; gap: 14px; }
+        .leftCol { order: 2; }
+        .rightCol { order: 1; }
+        .smallGrid { display: none; }
+        .tags { display: none; }
+      }
 
       .brand { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: #ffe3f3; color: #d3277f; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
       h1 { margin: 12px 0 6px; line-height: 1.15; font-size: clamp(1.8rem, 4vw, 3.1rem); font-weight: 900; }
@@ -83,7 +89,7 @@
     <main class="wrap">
       <section class="card">
         <div class="grid">
-          <div>
+          <div class="leftCol">
             <div class="brand">amiechikin.exe</div>
             <h1>an important pink website <span>for the cutest girl ever</span></h1>
             <p class="sub">No one knows how many questions there are. Not even science.</p>
@@ -115,7 +121,7 @@
             </div>
           </div>
 
-          <div>
+          <div class="rightCol">
             <section class="photoCard">
               <div class="imgWrap">
                 <span id="photoLabel" class="label">Cute evidence panel</span>
