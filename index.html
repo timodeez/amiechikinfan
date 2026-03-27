@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amiechikin Fan Quiz</title>
+    <style>
+      :root {
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffe4ef, #ffd6f6);
+        color: #4a2641;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.86);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 20px 50px rgba(166, 68, 128, 0.25);
+      }
+      h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 3vw, 2.8rem); }
+      .sub { margin-top: 0; color: #7d4b69; }
+      .grid { display: grid; gap: 20px; grid-template-columns: 1.1fr 1fr; }
+      @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+      .question { font-size: 1.35rem; font-weight: 700; margin: 0 0 12px; }
+      input {
+        width: 100%; box-sizing: border-box; border: 1px solid #efb2d4; border-radius: 14px;
+        padding: 12px 14px; font-size: 1rem; margin-bottom: 10px;
+      }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; }
+      button {
+        border: 0; border-radius: 12px; padding: 10px 14px; cursor: pointer; font-weight: 700;
+      }
+      .primary { background: #ef4f9d; color: white; }
+      .ghost { background: #fff; color: #c72e7e; border: 1px solid #efb2d4; }
+      .note { margin-top: 12px; min-height: 24px; font-weight: 600; }
+      .ok { color: #b20f67; }
+      .bad { color: #80556a; }
+      img {
+        width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 18px;
+        border: 1px solid #f6c5df; background: #ffe9f4;
+      }
+      .chip { margin-top: 10px; color: #7d4b69; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <h1>An Important Pink Website 💖</h1>
+        <p class="sub">No more 404 — this deploys as a static site on Vercel.</p>
+
+        <div class="grid">
+          <div>
+            <p id="question" class="question"></p>
+            <input id="answer" type="text" placeholder="Type your answer here..." />
+            <div class="row">
+              <button class="primary" id="checkBtn">Check answer</button>
+              <button class="ghost" id="revealBtn">Reveal answer</button>
+              <button class="ghost" id="nextBtn">Next question</button>
+            </div>
+            <p id="message" class="note"></p>
+            <p id="chip" class="chip"></p>
+          </div>
+          <div>
+            <img id="photo" alt="Quiz photo" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const photos = [
+        "amiechikin pics/amiechikin_1762596064_3761250859222246068_44676528496.jpg",
+        "amiechikin pics/amiechikin_1763110880_3765569446623504392_44676528496.jpg",
+        "amiechikin pics/amiechikin_1763695574_3770474215817585994_44676528496.jpg",
+        "amiechikin pics/amiechikin_1768729117_3812698635004886364_44676528496.jpg",
+        "amiechikin pics/amiechikin_1769305599_3817534514735059732_44676528496.jpg",
+        "amiechikin pics/amiechikin_1771087456_3832478916934867124_44676528496.jpg"
+      ];
+
+      const questions = [
+        { q: "Who is the cutest girl on the internet?", a: ["amie", "amiechikin", "amy"], ok: "you’re right — it’s AMIE! 💖" },
+        { q: "Who is the prettiest streamer ever?", a: ["amie", "amiechikin"], ok: "exactly. AMIE wins. ✨" },
+        { q: "What is the name of the tiny fluffy legend pet?", a: ["biscuit", "bisky", "bisquit"], ok: "correct — BISCUIT 🐹" },
+        { q: "Who has the strongest pink main-character aura?", a: ["amie", "amiechikin", "amy"], ok: "correct answer detected 🌸" }
+      ];
+
+      const normalize = (v) => v.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+      let i = 0;
+
+      const questionEl = document.getElementById("question");
+      const answerEl = document.getElementById("answer");
+      const messageEl = document.getElementById("message");
+      const photoEl = document.getElementById("photo");
+      const chipEl = document.getElementById("chip");
+
+      function render() {
+        const item = questions[i];
+        questionEl.textContent = item.q;
+        answerEl.value = "";
+        messageEl.textContent = "";
+        messageEl.className = "note";
+        chipEl.textContent = `Question ${i + 1} of ${questions.length}`;
+        photoEl.src = photos[i % photos.length];
+      }
+
+      function validate() {
+        const item = questions[i];
+        const answer = normalize(answerEl.value);
+        if (!answer) {
+          messageEl.textContent = "type your answer first 💌";
+          messageEl.className = "note bad";
+          return;
+        }
+        if (item.a.map(normalize).includes(answer)) {
+          messageEl.textContent = item.ok;
+          messageEl.className = "note ok";
+        } else {
+          messageEl.textContent = "not quite… try again 💭";
+          messageEl.className = "note bad";
+        }
+      }
+
+      document.getElementById("checkBtn").addEventListener("click", validate);
+      answerEl.addEventListener("keydown", (e) => { if (e.key === "Enter") validate(); });
+      document.getElementById("revealBtn").addEventListener("click", () => {
+        messageEl.textContent = questions[i].ok;
+        messageEl.className = "note ok";
+      });
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        i = (i + 1) % questions.length;
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
