@@ -342,8 +342,8 @@ export default function AmieChikinCuteQuizSite() {
 
         <Card className="relative w-full max-w-5xl overflow-hidden rounded-[2rem] border-white/60 bg-white/75 shadow-2xl backdrop-blur-xl">
           <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-40`} />
-          <CardContent className="relative grid gap-6 p-5 sm:grid-cols-2 sm:gap-8 sm:p-8">
-            <div className="flex flex-col justify-between gap-5">
+          <CardContent className="relative grid gap-5 p-4 sm:grid-cols-2 sm:gap-8 sm:p-8">
+            <div className="order-2 flex flex-col justify-between gap-4 sm:order-1 sm:gap-5">
               <div>
                 <div className="mb-4 flex items-center gap-2 text-pink-600">
                   <Heart className="h-5 w-5 fill-pink-500" />
@@ -360,7 +360,7 @@ export default function AmieChikinCuteQuizSite() {
                 </p>
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/70 bg-white/80 p-4 shadow-lg sm:p-5">
+              <div className="rounded-[1.5rem] border border-white/70 bg-white/85 p-4 shadow-lg sm:p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div className="inline-flex items-center gap-2 rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-pink-700">
                     <Icon className="h-4 w-4" />
@@ -462,20 +462,28 @@ export default function AmieChikinCuteQuizSite() {
                 </AnimatePresence>
               </div>
 
-              <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">
+              <div className="hidden flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500 sm:flex">
                 <span className="rounded-full bg-white/80 px-3 py-2 shadow-sm">pink mode enabled</span>
                 <span className="rounded-full bg-white/80 px-3 py-2 shadow-sm">chikawa energy</span>
                 <span className="rounded-full bg-white/80 px-3 py-2 shadow-sm">mystery question count</span>
                 <span className="rounded-full bg-white/80 px-3 py-2 shadow-sm">serve levels critical</span>
               </div>
+
+              <Button
+                variant="outline"
+                onClick={restart}
+                className="rounded-2xl border-pink-200 bg-white/80 py-5 text-sm font-semibold text-pink-600 hover:bg-pink-50 sm:hidden"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" /> Refresh questions
+              </Button>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="order-1 flex flex-col gap-3 sm:order-2 sm:gap-4">
               <motion.div
                 layout
-                className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/70 p-3 shadow-xl"
+                className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/70 p-2.5 shadow-xl sm:p-3"
               >
-                <div className="absolute right-3 top-3 z-10 rounded-full bg-white/85 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-pink-500 shadow">
+                <div className="absolute right-3 top-3 z-10 rounded-full bg-white/85 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-pink-500 shadow sm:text-xs">
                   {status === "correct" ? "Correct answer" : "Cute evidence panel"}
                 </div>
 
@@ -495,7 +503,7 @@ export default function AmieChikinCuteQuizSite() {
                 </div>
               </motion.div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="hidden grid-cols-2 gap-3 sm:grid">
                 <div className="rounded-[1.5rem] bg-white/80 p-4 shadow-lg">
                   <div className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-pink-500">Cute facts</div>
                   <div className="space-y-2 text-sm text-zinc-700">
@@ -516,14 +524,14 @@ export default function AmieChikinCuteQuizSite() {
                 </div>
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/70 bg-gradient-to-r from-pink-100 to-rose-100 p-4 text-sm text-zinc-700 shadow-lg">
+              <div className="hidden rounded-[1.5rem] border border-white/70 bg-gradient-to-r from-pink-100 to-rose-100 p-4 text-sm text-zinc-700 shadow-lg sm:block">
                 <span className="font-bold text-pink-600">Photo note:</span> Amie photos now point to the <code>amiechikin pics</code> folder and randomly switch only when moving to the next answer.
               </div>
 
               <Button
                 variant="outline"
                 onClick={restart}
-                className="rounded-2xl border-pink-200 bg-white/80 py-6 text-base font-semibold text-pink-600 hover:bg-pink-50"
+                className="hidden rounded-2xl border-pink-200 bg-white/80 py-6 text-base font-semibold text-pink-600 hover:bg-pink-50 sm:flex"
               >
                 <RefreshCw className="mr-2 h-4 w-4" /> Refresh with new questions
               </Button>
