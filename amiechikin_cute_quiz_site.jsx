@@ -32,7 +32,7 @@ const amiePhotos = [
   `${amiePhotoFolder}/amiechikin_1769305599_3817534514768586443_44676528496.jpg`,
   `${amiePhotoFolder}/amiechikin_1771087456_3832478916934867124_44676528496.jpg`,
   `${amiePhotoFolder}/amiechikin_1771087456_3832478921070447193_44676528496.jpg`,
-  `${amiePhotoFolder}/amiechikin_1771087457_3832478917756941503_44676528496.jpg`,
+  `${amiePhotoFolder}/amiechikin_1769305599_3817534515120907127_44676528496.jpg`,
 ];
 
 const biscuitPhotos = [
