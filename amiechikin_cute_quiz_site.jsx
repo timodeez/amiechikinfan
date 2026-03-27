@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const amiePhotoFolder = "/amiechikin%20pics";
+const amiePhotoFolder = "amiechikin pics";
 const amiePhotos = [
   `${amiePhotoFolder}/amiechikin_1762596064_3761250859222246068_44676528496.jpg`,
   `${amiePhotoFolder}/amiechikin_1762596064_3761250859507508783_44676528496.jpg`,
