@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amiechikin Fan Quiz</title>
+    <style>
+      :root { font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fff0f7, #ffe4f3 45%, #ffe7ff);
+        color: #4a2641;
+      }
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 16px; }
+      .card {
+        background: rgba(255, 255, 255, 0.78);
+        border-radius: 32px;
+        padding: 24px;
+        border: 1px solid rgba(255,255,255,.7);
+        box-shadow: 0 24px 60px rgba(161, 78, 132, 0.22);
+        backdrop-filter: blur(4px);
+      }
+      .grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 22px; }
+      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+      .brand { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: #ffe3f3; color: #d3277f; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      h1 { margin: 12px 0 6px; line-height: 1.15; font-size: clamp(1.8rem, 4vw, 3.1rem); font-weight: 900; }
+      h1 span { display: block; color: #ef4f9d; }
+      .sub { color: #7d4b69; margin: 0 0 14px; }
+
+      .panel {
+        margin-top: 14px;
+        border: 1px solid #ffd1ea;
+        border-radius: 24px;
+        background: rgba(255,255,255,.86);
+        padding: 18px;
+        box-shadow: 0 12px 30px rgba(165, 99, 145, 0.15);
+      }
+      .toprow { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+      .pill { padding: 8px 12px; border-radius: 999px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+      .pill.main { background: #ffe4f2; color: #d3277f; }
+      .pill.side { background: #fff; color: #866074; border: 1px solid #ffd6ec; }
+
+      .question { margin: 0; font-weight: 800; font-size: clamp(1.3rem, 2.4vw, 2rem); }
+      .hint { margin: 10px 0 14px; color: #7d4b69; font-size: .95rem; }
+
+      input {
+        width: 100%; border: 1px solid #efb2d4; border-radius: 14px;
+        padding: 12px 14px; font-size: 1rem; margin-bottom: 10px;
+      }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; }
+      button {
+        border: 0; border-radius: 14px; padding: 11px 16px; cursor: pointer;
+        font-weight: 700; font-size: .95rem;
+      }
+      .primary { background: #ef4f9d; color: #fff; }
+      .ghost { background: #fff; border: 1px solid #f5bfdc; color: #ce3181; }
+      #nextBtn { display: none; }
+
+      .msg {
+        margin-top: 12px; min-height: 28px; border-radius: 14px; padding: 10px 12px; font-weight: 700;
+        background: #fff; color: #6d4d5f;
+      }
+      .msg.ok { background: linear-gradient(90deg,#ffe5f2,#ffeef8); color: #be1a6d; }
+
+      .photoCard { border: 1px solid #ffd7ec; border-radius: 26px; padding: 10px; background: rgba(255,255,255,.82); box-shadow: 0 12px 30px rgba(152, 80, 130, .18); }
+      .label { position: absolute; right: 12px; top: 12px; background: rgba(255,255,255,.9); border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #ef4f9d; padding: 7px 10px; }
+      .imgWrap { position: relative; }
+      img { width: 100%; aspect-ratio: 4/5; border-radius: 20px; object-fit: cover; background: #ffe6f4; }
+
+      .smallGrid { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .smallBox { border-radius: 18px; padding: 14px; background: rgba(255,255,255,.84); box-shadow: 0 10px 25px rgba(145,84,126,.12); }
+      .smallTitle { margin-bottom: 8px; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #ef4f9d; }
+      .smallBox div { font-size: .92rem; margin: 5px 0; color: #664354; }
+
+      .tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+      .tag { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: #7d4b69; background: rgba(255,255,255,.85); border-radius: 999px; padding: 8px 10px; }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <div class="grid">
+          <div>
+            <div class="brand">amiechikin.exe</div>
+            <h1>an important pink website <span>for the cutest girl ever</span></h1>
+            <p class="sub">No one knows how many questions there are. Not even science.</p>
+
+            <section class="panel">
+              <div class="toprow">
+                <div id="mysteryPill" class="pill main">mystery quiz in progress</div>
+                <div id="chip" class="pill side">serve verification in progress</div>
+              </div>
+
+              <h2 id="question" class="question"></h2>
+              <p class="hint">Type your answer below and trust your instincts.</p>
+
+              <input id="answer" type="text" placeholder="type your answer here..." />
+              <div class="row">
+                <button id="checkBtn" class="primary">Check answer 💌</button>
+                <button id="revealBtn" class="ghost">Reveal answer ✨</button>
+                <button id="nextBtn" class="primary">Next mystery question →</button>
+              </div>
+
+              <div id="message" class="msg"></div>
+            </section>
+
+            <div class="tags">
+              <span class="tag">pink mode enabled</span>
+              <span class="tag">chikawa energy</span>
+              <span class="tag">mystery question count</span>
+              <span class="tag">serve levels critical</span>
+            </div>
+          </div>
+
+          <div>
+            <section class="photoCard">
+              <div class="imgWrap">
+                <span id="photoLabel" class="label">Cute evidence panel</span>
+                <img id="photo" alt="Quiz photo" />
+              </div>
+            </section>
+
+            <div class="smallGrid">
+              <div class="smallBox">
+                <div class="smallTitle">Cute facts</div>
+                <div>🐹 Biscuit supremacy</div>
+                <div>☕ Louisa Coffee lover</div>
+                <div>🍿 Popcorn enthusiast</div>
+                <div>🌍 Geography queen</div>
+              </div>
+              <div class="smallBox">
+                <div class="smallTitle">Certified lore</div>
+                <div>🚆 Public transport appreciator</div>
+                <div>👟 Step collector</div>
+                <div>💸 Money enjoyer</div>
+                <div>💅 Serve levels maxed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const amiePhotos = [
+        "amiechikin pics/amiechikin_1762596064_3761250859222246068_44676528496.jpg",
+        "amiechikin pics/amiechikin_1762596064_3761250859507508783_44676528496.jpg",
+        "amiechikin pics/amiechikin_1763110880_3765569446623504392_44676528496.jpg",
+        "amiechikin pics/amiechikin_1763695574_3770474215817585994_44676528496.jpg",
+        "amiechikin pics/amiechikin_1763695574_3770474215708532144_44676528496.jpg",
+        "amiechikin pics/amiechikin_1768798746_3813282727227959197_44676528496.jpg",
+        "amiechikin pics/amiechikin_1768729117_3812698635004886364_44676528496.jpg",
+        "amiechikin pics/amiechikin_1768729117_3812698635122343285_44676528496.jpg",
+        "amiechikin pics/amiechikin_1768576152_3811415474618709851_44676528496.jpg",
+        "amiechikin pics/amiechikin_1769305599_3817534514735059732_44676528496.jpg",
+        "amiechikin pics/amiechikin_1769305599_3817534514768586443_44676528496.jpg",
+        "amiechikin pics/amiechikin_1771087456_3832478916934867124_44676528496.jpg",
+        "amiechikin pics/amiechikin_1771087456_3832478921070447193_44676528496.jpg",
+        "amiechikin pics/amiechikin_1769305599_3817534515120907127_44676528496.jpg"
+      ];
+      const biscuitPhotos = [
+        "https://placehold.co/900x1200/png?text=Biscuit+Photo+1",
+        "https://placehold.co/900x1200/png?text=Biscuit+Photo+2"
+      ];
+
+      const amieAcceptedAnswers = ["amie","amy","amiechikin","amiechicken","amiechkn","amiechikinofficial","amie chikin","ami","amii"];
+      const biscuitAcceptedAnswers = ["biscuit","bisky","biscy","bisquit","hamster","biscuitt"];
+
+      const styleFacts = [
+        "the cutest girl on the internet","the prettiest human alive","an actual pink princess","the main character of every room",
+        "the most iconic girl in existence","the prettiest streamer ever created","an angel with insane visual stats"
+      ];
+      const publicCompliments = [
+        "the streamer with the nicest vibes","the variety queen with elite taste","the cutest creative on the timeline",
+        "the internet’s sweetest sunshine beam","the girl who makes every clip better"
+      ];
+      const personalFacts = [
+        "the cutest Louisa Coffee date ever","the healthiest walking queen alive","the girl with the best Jeju memories",
+        "the biggest step collector with the best vibes","the public transport princess","the cutest person to ever love money",
+        "the queen of serving outfit after outfit","the tiny diva with maximum aura"
+      ];
+      const biscuitFacts = [
+        "the cutest pet in the entire universe","the tiniest celebrity with the most aura","the most iconic hamster ever","the fluffiest legend alive"
+      ];
+
+      const amieTemplates = [
+        "Who is {fact}?","Who’s {fact}?","Who has been scientifically confirmed to be {fact}?",
+        "Who is universally agreed to be {fact}?","Be honest. Who is {fact}?"
+      ];
+      const biscuitTemplates = ["What is {fact}?","Who is {fact}?","Which tiny creature is {fact}?"];
+      const mysteryLabels = [
+        "mystery quiz in progress","cute question sequence active","scientific admiration test",
+        "pink main-character exam","classified cuteness protocol","serve audit currently running"
+      ];
+
+      const normalize = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+      const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+      const randomIdx = (len, exclude) => {
+        if (len <= 1) return 0;
+        let idx = Math.floor(Math.random() * len);
+        while (idx === exclude) idx = Math.floor(Math.random() * len);
+        return idx;
+      };
+
+      function buildQuestions() {
+        const amieFacts = shuffle([...styleFacts, ...publicCompliments, ...personalFacts]).slice(0, 18);
+        const biscuitPool = shuffle([...biscuitFacts]).slice(0, 4);
+
+        const amie = amieFacts.map((fact, index) => ({
+          type: "amie",
+          question: amieTemplates[index % amieTemplates.length].replace("{fact}", fact),
+          accepted: amieAcceptedAnswers,
+          celebration: "you’re right — it’s AMIE! 💖",
+          chip: index % 2 === 0 ? "extremely important question" : "serve verification in progress"
+        }));
+
+        const biscuit = biscuitPool.map((fact, index) => ({
+          type: "biscuit",
+          question: biscuitTemplates[index % biscuitTemplates.length].replace("{fact}", fact),
+          accepted: biscuitAcceptedAnswers,
+          celebration: "you’re right — it’s BISCUIT! 🐹",
+          chip: "tiny fluffy correct answer"
+        }));
+
+        return shuffle([...amie, ...biscuit]);
+      }
+
+      let questions = buildQuestions();
+      let index = 0;
+      let status = "idle";
+      let photoIndex = 0;
+
+      const questionEl = document.getElementById("question");
+      const answerEl = document.getElementById("answer");
+      const messageEl = document.getElementById("message");
+      const photoEl = document.getElementById("photo");
+      const chipEl = document.getElementById("chip");
+      const mysteryPillEl = document.getElementById("mysteryPill");
+      const nextBtn = document.getElementById("nextBtn");
+      const photoLabel = document.getElementById("photoLabel");
+
+      function render() {
+        const item = questions[index];
+        const gallery = item.type === "amie" ? amiePhotos : biscuitPhotos;
+        questionEl.textContent = item.question;
+        chipEl.textContent = item.chip;
+        mysteryPillEl.textContent = mysteryLabels[index % mysteryLabels.length];
+        answerEl.placeholder = item.type === "amie" ? "type your answer here..." : "type the tiny celebrity's name...";
+        messageEl.className = "msg";
+        messageEl.textContent = "";
+        answerEl.value = "";
+        photoEl.src = gallery[photoIndex % gallery.length];
+        photoLabel.textContent = status === "correct" ? "Correct answer" : "Cute evidence panel";
+        nextBtn.style.display = status === "correct" ? "inline-block" : "none";
+      }
+
+      function setCorrect(item) {
+        status = "correct";
+        messageEl.className = "msg ok";
+        messageEl.textContent = item.celebration;
+        photoLabel.textContent = "Correct answer";
+        nextBtn.style.display = "inline-block";
+      }
+
+      function submitAnswer() {
+        const item = questions[index];
+        const clean = normalize(answerEl.value);
+        const validAnswers = item.accepted.map(normalize);
+
+        if (!clean) {
+          status = "wrong";
+          messageEl.className = "msg";
+          messageEl.textContent = "type your answer first, silly 💌";
+          return;
+        }
+
+        if (validAnswers.includes(clean)) {
+          setCorrect(item);
+          return;
+        }
+
+        status = "wrong";
+        messageEl.className = "msg";
+        messageEl.textContent = item.type === "amie" ? "not quite… try again 💭" : "close, but the tiny legend disagrees 🐹";
+      }
+
+      function nextQuestion() {
+        const current = questions[index];
+        const next = questions[index + 1];
+
+        if (index < questions.length - 1) {
+          if (next?.type === current.type) {
+            const gallery = current.type === "amie" ? amiePhotos : biscuitPhotos;
+            photoIndex = randomIdx(gallery.length, photoIndex);
+          } else {
+            const nextGallery = next?.type === "amie" ? amiePhotos : biscuitPhotos;
+            photoIndex = randomIdx(nextGallery.length);
+          }
+          index += 1;
+        } else {
+          questions = buildQuestions();
+          index = 0;
+          const firstType = questions[0]?.type;
+          photoIndex = randomIdx(firstType === "amie" ? amiePhotos.length : biscuitPhotos.length);
+        }
+
+        status = "idle";
+        render();
+      }
+
+      document.getElementById("checkBtn").addEventListener("click", submitAnswer);
+      document.getElementById("revealBtn").addEventListener("click", () => setCorrect(questions[index]));
+      nextBtn.addEventListener("click", nextQuestion);
+      answerEl.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitAnswer();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
